@@ -38,11 +38,11 @@ async function setupApacheKafka(app: INestApplication) {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: 'nestjs-api-boilerplate',
+        clientId: 'ms-company',
         brokers: [`${kafka.host}:${kafka.port}`],
       },
       consumer: {
-        groupId: `nestjs-api-boilerplate-consumer`,
+        groupId: `ms-company-consumer`,
       },
     },
   });
