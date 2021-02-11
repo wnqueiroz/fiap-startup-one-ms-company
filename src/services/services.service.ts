@@ -15,6 +15,14 @@ export class ServicesService {
     private companiesRepository: Repository<CompanyEntity>,
   ) {}
 
+  async getOne(id: string): Promise<ServiceEntity> {
+    const serviceEntity = await this.servicesRepository.findOne(id);
+
+    if (!serviceEntity) throw new NotFoundException('Service not found');
+
+    return serviceEntity;
+  }
+
   async create(createServiceDTO: CreateServiceDTO): Promise<ServiceEntity> {
     const { idCompany } = createServiceDTO;
 
