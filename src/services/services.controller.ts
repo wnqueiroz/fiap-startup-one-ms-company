@@ -3,10 +3,12 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Inject,
   Param,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { IsUUID } from 'class-validator';
 
 import { CreateServiceDTO } from './dtos/create-service.dto';
@@ -21,9 +23,16 @@ export class FindOneParams {
   id: string;
 }
 
+enum TOPICS {
+  SERVICES_CREATED = 'services.created',
+}
+
 @Controller('/v1/services')
 export class ServicesController {
-  constructor(private readonly servicesService: ServicesService) {}
+  constructor(
+    private readonly servicesService: ServicesService,
+    @Inject('SERVICES_SERVICE') private client: ClientKafka,
+  ) {}
 
   @Post()
   @UseInterceptors(ClassSerializerInterceptor)
@@ -31,6 +40,10 @@ export class ServicesController {
     @Body() createServiceDTO: CreateServiceDTO,
   ): Promise<ServiceDTO> {
     const serviceEntity = await this.servicesService.create(createServiceDTO);
+
+    await this.client
+      .emit(TOPICS.SERVICES_CREATED, { ...serviceEntity })
+      .toPromise();
 
     return new ServiceDTO(serviceEntity);
   }

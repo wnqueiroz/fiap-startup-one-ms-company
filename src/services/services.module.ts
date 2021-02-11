@@ -7,6 +7,8 @@ import { ServicesController } from './services.controller';
 import { ServicePeriodsEntity } from './service-periods.entity';
 
 import { CompanyEntity } from '../companies/company.entity';
+import { ClientOptions, ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -14,6 +16,31 @@ import { CompanyEntity } from '../companies/company.entity';
       ServiceEntity,
       ServicePeriodsEntity,
       CompanyEntity,
+    ]),
+    ClientsModule.registerAsync([
+      {
+        name: 'SERVICES_SERVICE',
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService): ClientOptions => {
+          const { kafka } = configService.get('app');
+
+          return {
+            transport: Transport.KAFKA,
+            options: {
+              client: {
+                clientId: 'ms-company',
+                brokers: [`${kafka.host}:${kafka.port}`],
+              },
+              consumer: {
+                groupId: 'ms-company-consumer',
+              },
+              producer: {
+                allowAutoTopicCreation: true,
+              },
+            },
+          };
+        },
+      },
     ]),
   ],
   controllers: [ServicesController],
