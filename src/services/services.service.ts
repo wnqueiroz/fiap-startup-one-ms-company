@@ -25,7 +25,9 @@ export class ServicesService {
   ) {}
 
   async getOne(id: string): Promise<ServiceEntity> {
-    const serviceEntity = await this.servicesRepository.findOne(id);
+    const serviceEntity = await this.servicesRepository.findOne(id, {
+      relations: ['servicePeriods'],
+    });
 
     if (!serviceEntity) throw new NotFoundException('Service not found');
 
@@ -65,7 +67,7 @@ export class ServicesService {
 
     if (servicePeriodAlreadyExists)
       throw new UnprocessableEntityException(
-        'Service period with startTime already exists',
+        'Service period with start time already exists',
       );
 
     const servicePeriodEntity = this.servicePeriodsRepository.create({
