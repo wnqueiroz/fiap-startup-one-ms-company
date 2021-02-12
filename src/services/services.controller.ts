@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  HttpCode,
   Inject,
   Param,
   Post,
@@ -10,6 +11,13 @@ import {
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { IsUUID } from 'class-validator';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { CreateServiceDTO } from './dtos/create-service.dto';
 
@@ -30,6 +38,7 @@ enum TOPICS {
   SERVICE_PERIODS_CREATED = 'service_periods.created',
 }
 
+@ApiTags('services')
 @Controller('/v1/services')
 export class ServicesController {
   constructor(
@@ -39,6 +48,11 @@ export class ServicesController {
 
   @Post()
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Create a service for company' })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: ServiceDTO,
+  })
   async create(
     @Body() createServiceDTO: CreateServiceDTO,
   ): Promise<ServiceDTO> {
@@ -53,6 +67,16 @@ export class ServicesController {
 
   @Post('/:id/periods')
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Create a service period for the service' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+  })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: ServicePeriodDTO,
+  })
   async createPeriods(
     @Param() params: RefOneParams,
     @Body() createServicePeriodDTO: CreateServicePeriodDTO,
@@ -73,6 +97,16 @@ export class ServicesController {
 
   @Get('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Get a service by ID' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+  })
+  @ApiOkResponse({
+    description: 'The record has been successfully returned.',
+    type: ServiceDTO,
+  })
   async getOne(@Param() params: RefOneParams): Promise<ServiceDTO> {
     const { id } = params;
 
