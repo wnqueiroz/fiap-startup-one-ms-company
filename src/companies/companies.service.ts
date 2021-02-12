@@ -28,6 +28,7 @@ export class CompaniesService {
       where: {
         idCompany,
       },
+      relations: ['servicePeriods'],
     });
   }
 

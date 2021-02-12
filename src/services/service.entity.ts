@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 import { CompanyEntity } from '../companies/company.entity';
+import { ServicePeriodsEntity } from './service-periods.entity';
 
 @Entity({
   name: 'services',
@@ -31,6 +33,12 @@ export class ServiceEntity {
   )
   @JoinColumn({ name: 'idCompany' })
   company: CompanyEntity;
+
+  @OneToMany(
+    () => ServicePeriodsEntity,
+    servicePeriod => servicePeriod.service,
+  )
+  servicePeriods: ServicePeriodsEntity[];
 
   @CreateDateColumn()
   createdAt: Date;
