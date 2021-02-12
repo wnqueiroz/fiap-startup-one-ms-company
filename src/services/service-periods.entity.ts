@@ -25,6 +25,9 @@ export class ServicePeriodsEntity {
   @ManyToOne(
     () => ServiceEntity,
     service => service.id,
+    {
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn({ name: 'idService' })
   service: ServiceEntity;

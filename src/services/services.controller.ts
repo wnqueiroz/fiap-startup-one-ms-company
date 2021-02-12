@@ -2,6 +2,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -37,6 +38,7 @@ export class RefOneParams {
 enum TOPICS {
   SERVICES_CREATED = 'services.created',
   SERVICES_UPDATED = 'services.updated',
+  SERVICES_DELETED = 'services.deleted',
   SERVICE_PERIODS_CREATED = 'service_periods.created',
 }
 
@@ -142,6 +144,30 @@ export class ServicesController {
 
     await this.client
       .emit(TOPICS.SERVICES_UPDATED, { ...serviceEntity })
+      .toPromise();
+
+    return new ServiceDTO(serviceEntity);
+  }
+
+  @Delete('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Delete a service by ID' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+  })
+  @ApiOkResponse({
+    description: 'The record has been successfully deleted.',
+    type: ServiceDTO,
+  })
+  async deleteOne(@Param() params: RefOneParams): Promise<ServiceDTO> {
+    const { id } = params;
+
+    const serviceEntity = await this.servicesService.deleteOne(id);
+
+    await this.client
+      .emit(TOPICS.SERVICES_DELETED, { ...serviceEntity })
       .toPromise();
 
     return new ServiceDTO(serviceEntity);

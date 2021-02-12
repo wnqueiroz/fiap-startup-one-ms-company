@@ -47,6 +47,12 @@ export class ServicesService {
     });
   }
 
+  async deleteOne(id: string): Promise<ServiceEntity> {
+    const serviceEntity = await this.getOne(id);
+
+    return this.servicesRepository.remove(serviceEntity);
+  }
+
   async create(createServiceDTO: CreateServiceDTO): Promise<ServiceEntity> {
     const { idCompany } = createServiceDTO;
 
