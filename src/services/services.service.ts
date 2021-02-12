@@ -12,6 +12,7 @@ import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
 import { ServiceEntity } from './service.entity';
 import { CompanyEntity } from '../companies/company.entity';
 import { ServicePeriodsEntity } from './service-periods.entity';
+import { UpdateServiceDTO } from './dtos/update-service.dto';
 
 @Injectable()
 export class ServicesService {
@@ -32,6 +33,18 @@ export class ServicesService {
     if (!serviceEntity) throw new NotFoundException('Service not found');
 
     return serviceEntity;
+  }
+
+  async updateOne(
+    id: string,
+    updateServiceDto: UpdateServiceDTO,
+  ): Promise<ServiceEntity> {
+    const serviceEntity = await this.getOne(id);
+
+    return this.servicesRepository.save({
+      ...serviceEntity,
+      ...updateServiceDto,
+    });
   }
 
   async create(createServiceDTO: CreateServiceDTO): Promise<ServiceEntity> {

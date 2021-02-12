@@ -3,9 +3,9 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
-  HttpCode,
   Inject,
   Param,
+  Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -25,6 +25,7 @@ import { ServiceDTO } from './dtos/service.dto';
 import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
 import { ServicesService } from './services.service';
 import { ServicePeriodDTO } from './dtos/service-period.dto';
+import { UpdateServiceDTO } from './dtos/update-service.dto';
 
 export class RefOneParams {
   @IsUUID('all', {
@@ -35,6 +36,7 @@ export class RefOneParams {
 
 enum TOPICS {
   SERVICES_CREATED = 'services.created',
+  SERVICES_UPDATED = 'services.updated',
   SERVICE_PERIODS_CREATED = 'service_periods.created',
 }
 
@@ -111,6 +113,36 @@ export class ServicesController {
     const { id } = params;
 
     const serviceEntity = await this.servicesService.getOne(id);
+
+    return new ServiceDTO(serviceEntity);
+  }
+
+  @Patch('/:id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Update a service by ID' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+  })
+  @ApiOkResponse({
+    description: 'The record has been successfully updated.',
+    type: ServiceDTO,
+  })
+  async updateOne(
+    @Param() params: RefOneParams,
+    @Body() updateServiceDto: UpdateServiceDTO,
+  ): Promise<ServiceDTO> {
+    const { id } = params;
+
+    const serviceEntity = await this.servicesService.updateOne(
+      id,
+      updateServiceDto,
+    );
+
+    await this.client
+      .emit(TOPICS.SERVICES_UPDATED, { ...serviceEntity })
+      .toPromise();
 
     return new ServiceDTO(serviceEntity);
   }
