@@ -16,6 +16,7 @@ import { ConfigService } from '@nestjs/config';
       ServiceEntity,
       ServicePeriodsEntity,
       CompanyEntity,
+      ServicePeriodsEntity,
     ]),
     ClientsModule.registerAsync([
       {

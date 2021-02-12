@@ -1,0 +1,19 @@
+import { IsMilitaryTime, IsNotEmpty } from 'class-validator';
+
+export class CreateServicePeriodDTO {
+  @IsNotEmpty({
+    message: 'Informe o horário de início do perído de atendimento',
+  })
+  @IsMilitaryTime({
+    message: 'formato inválido',
+  })
+  startTime: string;
+
+  @IsNotEmpty({
+    message: 'Informe o horário de término do perído de atendimento',
+  })
+  @IsMilitaryTime({
+    message: 'formato inválido',
+  })
+  endTime: string;
+}

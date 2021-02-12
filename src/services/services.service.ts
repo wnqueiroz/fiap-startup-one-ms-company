@@ -1,10 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CompanyEntity } from '../companies/company.entity';
 import { Repository } from 'typeorm';
 
 import { CreateServiceDTO } from './dtos/create-service.dto';
+import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
+
 import { ServiceEntity } from './service.entity';
+import { CompanyEntity } from '../companies/company.entity';
+import { ServicePeriodsEntity } from './service-periods.entity';
 
 @Injectable()
 export class ServicesService {
@@ -13,6 +20,8 @@ export class ServicesService {
     private servicesRepository: Repository<ServiceEntity>,
     @InjectRepository(CompanyEntity)
     private companiesRepository: Repository<CompanyEntity>,
+    @InjectRepository(ServicePeriodsEntity)
+    private servicePeriodsRepository: Repository<ServicePeriodsEntity>,
   ) {}
 
   async getOne(id: string): Promise<ServiceEntity> {
@@ -33,5 +42,35 @@ export class ServicesService {
     const serviceEntity = this.servicesRepository.create(createServiceDTO);
 
     return this.servicesRepository.save(serviceEntity);
+  }
+
+  async createPeriods(
+    idService: string,
+    createServicePeriodDTO: CreateServicePeriodDTO,
+  ): Promise<ServicePeriodsEntity> {
+    const serviceExists = await this.servicesRepository.findOne(idService);
+
+    if (!serviceExists) throw new NotFoundException('Service not found');
+
+    const { startTime } = createServicePeriodDTO;
+
+    const servicePeriodExists = await this.servicePeriodsRepository.find({
+      where: {
+        idService,
+        startTime,
+      },
+    });
+
+    if (servicePeriodExists)
+      throw new UnprocessableEntityException(
+        'Service period with startTime already exists',
+      );
+
+    const servicePeriodEntity = this.servicePeriodsRepository.create({
+      ...createServicePeriodDTO,
+      idService,
+    });
+
+    return this.servicePeriodsRepository.save(servicePeriodEntity);
   }
 }
