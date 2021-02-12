@@ -53,16 +53,25 @@ export class ServicesService {
     return this.servicesRepository.remove(serviceEntity);
   }
 
-  async create(createServiceDTO: CreateServiceDTO): Promise<ServiceEntity> {
-    const { idCompany } = createServiceDTO;
-
+  async create(
+    idCompany: string,
+    createServiceDTO: CreateServiceDTO,
+  ): Promise<ServiceEntity> {
     const companyExists = await this.companiesRepository.findOne(idCompany);
 
     if (!companyExists) throw new NotFoundException('Company not found');
 
-    const serviceEntity = this.servicesRepository.create(createServiceDTO);
+    let serviceEntity = this.servicesRepository.create({
+      ...createServiceDTO,
+      idCompany,
+    });
 
-    return this.servicesRepository.save(serviceEntity);
+    serviceEntity = await this.servicesRepository.save(serviceEntity);
+
+    return {
+      ...serviceEntity,
+      servicePeriods: [],
+    };
   }
 
   async createPeriods(

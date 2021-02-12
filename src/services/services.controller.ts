@@ -20,13 +20,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { CreateServiceDTO } from './dtos/create-service.dto';
-
 import { ServiceDTO } from './dtos/service.dto';
 import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
 import { ServicesService } from './services.service';
 import { ServicePeriodDTO } from './dtos/service-period.dto';
 import { UpdateServiceDTO } from './dtos/update-service.dto';
+
+import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
 
 export class RefOneParams {
   @IsUUID('all', {
@@ -35,69 +35,13 @@ export class RefOneParams {
   id: string;
 }
 
-enum TOPICS {
-  SERVICES_CREATED = 'services.created',
-  SERVICES_UPDATED = 'services.updated',
-  SERVICES_DELETED = 'services.deleted',
-  SERVICE_PERIODS_CREATED = 'service_periods.created',
-}
-
 @ApiTags('services')
 @Controller('/v1/services')
 export class ServicesController {
   constructor(
     private readonly servicesService: ServicesService,
-    @Inject('SERVICES_SERVICE') private client: ClientKafka,
+    @Inject(KAFKA_CLIENTS.SERVICES_SERVICE) private client: ClientKafka,
   ) {}
-
-  @Post()
-  @UseInterceptors(ClassSerializerInterceptor)
-  @ApiOperation({ summary: 'Create a service for company' })
-  @ApiCreatedResponse({
-    description: 'The record has been successfully created.',
-    type: ServiceDTO,
-  })
-  async create(
-    @Body() createServiceDTO: CreateServiceDTO,
-  ): Promise<ServiceDTO> {
-    const serviceEntity = await this.servicesService.create(createServiceDTO);
-
-    await this.client
-      .emit(TOPICS.SERVICES_CREATED, { ...serviceEntity })
-      .toPromise();
-
-    return new ServiceDTO(serviceEntity);
-  }
-
-  @Post('/:id/periods')
-  @UseInterceptors(ClassSerializerInterceptor)
-  @ApiOperation({ summary: 'Create a service period for the service' })
-  @ApiParam({
-    name: 'id',
-    type: 'string',
-    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
-  })
-  @ApiCreatedResponse({
-    description: 'The record has been successfully created.',
-    type: ServicePeriodDTO,
-  })
-  async createPeriods(
-    @Param() params: RefOneParams,
-    @Body() createServicePeriodDTO: CreateServicePeriodDTO,
-  ): Promise<ServicePeriodDTO> {
-    const { id } = params;
-
-    const servicePeriodEntity = await this.servicesService.createPeriods(
-      id,
-      createServicePeriodDTO,
-    );
-
-    await this.client
-      .emit(TOPICS.SERVICE_PERIODS_CREATED, { ...servicePeriodEntity })
-      .toPromise();
-
-    return new ServicePeriodDTO(servicePeriodEntity);
-  }
 
   @Get('/:id')
   @UseInterceptors(ClassSerializerInterceptor)
@@ -143,7 +87,7 @@ export class ServicesController {
     );
 
     await this.client
-      .emit(TOPICS.SERVICES_UPDATED, { ...serviceEntity })
+      .emit(KAFKA_TOPICS.SERVICES_UPDATED, { ...serviceEntity })
       .toPromise();
 
     return new ServiceDTO(serviceEntity);
@@ -167,9 +111,39 @@ export class ServicesController {
     const serviceEntity = await this.servicesService.deleteOne(id);
 
     await this.client
-      .emit(TOPICS.SERVICES_DELETED, { ...serviceEntity })
+      .emit(KAFKA_TOPICS.SERVICES_DELETED, { ...serviceEntity })
       .toPromise();
 
     return new ServiceDTO(serviceEntity);
+  }
+
+  @Post('/:id/periods')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiOperation({ summary: 'Create a service period for the service' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+  })
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: ServicePeriodDTO,
+  })
+  async createPeriods(
+    @Param() params: RefOneParams,
+    @Body() createServicePeriodDTO: CreateServicePeriodDTO,
+  ): Promise<ServicePeriodDTO> {
+    const { id } = params;
+
+    const servicePeriodEntity = await this.servicesService.createPeriods(
+      id,
+      createServicePeriodDTO,
+    );
+
+    await this.client
+      .emit(KAFKA_TOPICS.SERVICE_PERIODS_CREATED, { ...servicePeriodEntity })
+      .toPromise();
+
+    return new ServicePeriodDTO(servicePeriodEntity);
   }
 }
