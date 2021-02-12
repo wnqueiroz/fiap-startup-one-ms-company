@@ -54,14 +54,16 @@ export class ServicesService {
 
     const { startTime } = createServicePeriodDTO;
 
-    const servicePeriodExists = await this.servicePeriodsRepository.find({
+    const servicePeriod = await this.servicePeriodsRepository.find({
       where: {
         idService,
         startTime,
       },
     });
 
-    if (servicePeriodExists)
+    const servicePeriodAlreadyExists = servicePeriod && servicePeriod.length;
+
+    if (servicePeriodAlreadyExists)
       throw new UnprocessableEntityException(
         'Service period with startTime already exists',
       );
