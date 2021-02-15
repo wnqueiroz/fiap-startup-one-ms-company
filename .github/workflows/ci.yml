@@ -63,6 +63,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: '${{ secrets.DOCKER_REPOSITORY }}:${{ steps.package-version.outputs.version }}'
+          tags: |
+            ${{ secrets.DOCKER_REPOSITORY }}:${{ steps.package-version.outputs.version }}
+            ${{ secrets.DOCKER_REPOSITORY }}:latest
           build-args: |
             NODE_ENV=production
