@@ -29,25 +29,6 @@ function setupValidationPipe(app: INestApplication) {
   );
 }
 
-async function setupApacheKafka(app: INestApplication) {
-  const configService = app.get(ConfigService);
-
-  const { kafka } = configService.get('app');
-
-  return app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.KAFKA,
-    options: {
-      client: {
-        clientId: 'ms-company',
-        brokers: [`${kafka.host}:${kafka.port}`],
-      },
-      consumer: {
-        groupId: `ms-company-consumer`,
-      },
-    },
-  });
-}
-
 async function initServer(app: INestApplication) {
   const configService = app.get(ConfigService);
 
@@ -67,7 +48,6 @@ async function bootstrap() {
 
   setupValidationPipe(app);
   setupSwagger(app);
-  await setupApacheKafka(app);
 
   await initServer(app);
 }
