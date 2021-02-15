@@ -8,11 +8,13 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { IsUUID } from 'class-validator';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
@@ -28,6 +30,8 @@ import { UpdateServiceDTO } from './dtos/update-service.dto';
 
 import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 export class RefOneParams {
   @IsUUID('all', {
     message: 'O id deve ser um UUID válido',
@@ -36,6 +40,8 @@ export class RefOneParams {
 }
 
 @ApiTags('services')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('/v1/services')
 export class ServicesController {
   constructor(

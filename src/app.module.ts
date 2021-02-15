@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AuthModule } from './auth/auth.module';
 import { ServicesModule } from './services/services.module';
 import { CompaniesModule } from './companies/companies.module';
 
@@ -23,6 +24,7 @@ import databaseConfig from './config/database.config';
     }),
     ServicesModule,
     CompaniesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

@@ -6,10 +6,12 @@ import {
   Inject,
   Param,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
@@ -27,6 +29,9 @@ import { CompaniesService } from './companies.service';
 import { CreateCompanyDTO } from './dtos/create-company.dto';
 
 import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
+
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 export class RefOneParams {
   @IsUUID('all', {
     message: 'O id deve ser um UUID válido',
@@ -35,6 +40,8 @@ export class RefOneParams {
 }
 
 @ApiTags('companies')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('/v1/companies')
 export class CompaniesController {
   constructor(
@@ -96,6 +103,11 @@ export class CompaniesController {
   @Post('/:id/services')
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiOperation({ summary: 'Create a service for company' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+  })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
     type: ServiceDTO,
