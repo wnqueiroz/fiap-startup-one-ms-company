@@ -2,6 +2,8 @@
 
 [![codecov](https://codecov.io/gh/wnqueiroz/fiap-startup-one-ms-company/branch/main/graph/badge.svg?token=70iyUaZs2l)](https://codecov.io/gh/wnqueiroz/fiap-startup-one-ms-company)
 
+![ci](https://github.com/wnqueiroz/fiap-startup-one-ms-company/workflows/ci/badge.svg)
+
 Microservice to centralize business rules related only to the company
 
 ## Installation
