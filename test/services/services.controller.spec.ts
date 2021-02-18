@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+<<<<<<< HEAD:src/services/services.controller.spec.ts
 import { CompanyEntity } from '../companies/company.entity';
 import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
 import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
@@ -12,6 +13,20 @@ import { ServicePeriodsEntity } from './service-periods.entity';
 import { ServiceEntity } from './service.entity';
 import { ServicesController } from './services.controller';
 import { ServicesService } from './services.service';
+=======
+import { ServicesController } from '../../src/services/services.controller';
+import { ServicesService } from '../../src/services/services.service';
+import { ServiceEntity } from '../../src/services/service.entity';
+import { ServicePeriodsEntity } from '../../src/services/service-periods.entity';
+import { CompanyEntity } from '../../src/companies/company.entity';
+
+import { ServiceDTO } from '../../src/services/dtos/service.dto';
+import { UpdateServiceDTO } from '../../src/services/dtos/update-service.dto';
+import { CreateServicePeriodDTO } from '../../src/services/dtos/create-service-period.dto';
+import { ServicePeriodDTO } from '../../src/services/dtos/service-period.dto';
+
+import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../../src/contants';
+>>>>>>> e0bf851 (test: adding the remaining tests for ms company):test/services/services.controller.spec.ts
 
 describe('ServicesController', () => {
   let serviceEntity: ServiceEntity;

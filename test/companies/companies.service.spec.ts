@@ -4,11 +4,35 @@ import { CompanyEntity } from '../../src/companies/company.entity';
 import { ServiceEntity } from '../../src/services/service.entity';
 import { Repository } from 'typeorm';
 import { CompaniesService } from '../../src/companies/companies.service';
+import { CreateCompanyDTO } from '../../src/companies/dtos/create-company.dto';
 
 describe('CompaniesService', () => {
   let companiesService: CompaniesService;
   let companiesRepository: Repository<CompanyEntity>;
   let servicesRepository: Repository<ServiceEntity>;
+
+  const createCompanyDTO: CreateCompanyDTO = {
+    name: 'companyName',
+    idUser: 'idUser',
+  };
+
+  const createCompany: CompanyEntity = {
+    id: 'uuidCompany',
+    name: 'Company Name',
+    idUser: 'idUser',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const createService: ServiceEntity = {
+    id: 'uuidService',
+    name: 'Service Name',
+    idCompany: 'idCompany',
+    company: createCompany,
+    servicePeriods: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -34,18 +58,21 @@ describe('CompaniesService', () => {
     );
   });
 
-  describe('When getAll is called ', () => {
+  describe('getAll', () => {
     it('should return all created companies', async () => {
-      const result = [await createCompany()];
+      const result = [createCompany];
+
       jest.spyOn(companiesRepository, 'find').mockResolvedValueOnce(result);
+
       expect(await companiesService.getAll()).toBe(result);
     });
   });
 
-  describe('When getAllServces is called', () => {
+  describe('getAllServces', () => {
     it('should return all available services by company id', async () => {
-      const company = await createCompany();
-      const services = [await createService()];
+      const company = createCompany;
+      const services = [createService];
+
       jest.spyOn(companiesRepository, 'findOne').mockResolvedValueOnce(company);
       jest.spyOn(servicesRepository, 'find').mockResolvedValueOnce(services);
 
@@ -63,10 +90,11 @@ describe('CompaniesService', () => {
     });
   });
 
-  describe('When create is called', () => {
+  describe('create', () => {
     it('should create a company given a companyDTO', async () => {
-      const company: CompanyEntity = await createCompany();
-      const createCompanyRequest = await createCompanyDTO();
+      const company: CompanyEntity = createCompany;
+      const createCompanyRequest = createCompanyDTO;
+
       jest.spyOn(companiesRepository, 'create').mockReturnValueOnce(company);
       jest.spyOn(companiesRepository, 'save').mockResolvedValueOnce(company);
 
@@ -74,44 +102,3 @@ describe('CompaniesService', () => {
     });
   });
 });
-
-async function createCompanyDTO() {
-  return {
-    name: 'companyName',
-    idUser: 'idUser',
-  };
-}
-
-async function createCompany() {
-  return {
-    id: 'uuidCompany',
-    name: 'Company Name',
-    idUser: 'idUser',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-}
-
-async function createService() {
-  return {
-    id: 'uuidService',
-    name: 'Service Name',
-    idCompany: 'idCompany',
-    company: createCompany(),
-    servicePeriods: [createServicePeriod()],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-}
-
-async function createServicePeriod() {
-  return {
-    id: 'uuidServicePeriods',
-    idService: 'idService',
-    service: createService(),
-    startTime: '22:30:00',
-    endTime: '23:00:00',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-}
