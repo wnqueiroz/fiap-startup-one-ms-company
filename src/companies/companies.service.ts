@@ -15,8 +15,12 @@ export class CompaniesService {
     private companiesRepository: Repository<CompanyEntity>,
   ) {}
 
-  getAll(): Promise<CompanyEntity[]> {
-    return this.companiesRepository.find();
+  getAll(idUser: string): Promise<CompanyEntity[]> {
+    return this.companiesRepository.find({
+      where: {
+        idUser,
+      },
+    });
   }
 
   async getAllServices(idCompany: string): Promise<ServiceEntity[]> {
@@ -32,8 +36,14 @@ export class CompaniesService {
     });
   }
 
-  async create(createCompanyDTO: CreateCompanyDTO): Promise<CompanyEntity> {
-    const companyEntity = this.companiesRepository.create(createCompanyDTO);
+  async create(
+    idUser: string,
+    createCompanyDTO: CreateCompanyDTO,
+  ): Promise<CompanyEntity> {
+    const companyEntity = this.companiesRepository.create({
+      ...createCompanyDTO,
+      idUser,
+    });
 
     return this.companiesRepository.save(companyEntity);
   }

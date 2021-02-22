@@ -20,6 +20,8 @@ import {
 } from '@nestjs/swagger';
 import { IsUUID } from 'class-validator';
 
+import { GetCurrentUser } from '../auth/auth.annotation';
+import { CurrentUserDTO } from '../auth/dto/current-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
 import { CreateServiceDTO } from '../services/dtos/create-service.dto';
@@ -55,8 +57,10 @@ export class CompaniesController {
     type: CompanyDTO,
     isArray: true,
   })
-  async getAll(): Promise<CompanyDTO[]> {
-    const companyEntities = await this.companiesService.getAll();
+  async getAll(@GetCurrentUser() user: CurrentUserDTO): Promise<CompanyDTO[]> {
+    const { id } = user;
+
+    const companyEntities = await this.companiesService.getAll(id);
 
     return companyEntities.map(companyEntity => new CompanyDTO(companyEntity));
   }
@@ -91,8 +95,14 @@ export class CompaniesController {
   })
   async create(
     @Body() createCompanyDTO: CreateCompanyDTO,
+    @GetCurrentUser() user: CurrentUserDTO,
   ): Promise<CompanyDTO> {
-    const companyEntity = await this.companiesService.create(createCompanyDTO);
+    const { id } = user;
+
+    const companyEntity = await this.companiesService.create(
+      id,
+      createCompanyDTO,
+    );
 
     return new CompanyDTO(companyEntity);
   }
