@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.0.7...1.1.0) (2021-02-22)
+
+
+### Funcionalidades
+
+* using "idUser" from JWT token to create and retrieve companies ([fe5d281](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/fe5d2817153bc93d2379042cb37ed16fea52bbd7))
+
 ### [1.0.7](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.0.6...1.0.7) (2021-02-22)
 
 ### [1.0.6](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.0.5...1.0.6) (2021-02-17)
