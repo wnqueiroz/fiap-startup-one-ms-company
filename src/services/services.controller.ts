@@ -12,7 +12,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { IsUUID } from 'class-validator';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -21,16 +20,15 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-
-import { ServiceDTO } from './dtos/service.dto';
-import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
-import { ServicesService } from './services.service';
-import { ServicePeriodDTO } from './dtos/service-period.dto';
-import { UpdateServiceDTO } from './dtos/update-service.dto';
-
-import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
+import { IsUUID } from 'class-validator';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
+import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
+import { ServicePeriodDTO } from './dtos/service-period.dto';
+import { ServiceDTO } from './dtos/service.dto';
+import { UpdateServiceDTO } from './dtos/update-service.dto';
+import { ServicesService } from './services.service';
 
 export class RefOneParams {
   @IsUUID('all', {

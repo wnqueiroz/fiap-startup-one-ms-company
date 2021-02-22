@@ -1,19 +1,17 @@
 import { Test } from '@nestjs/testing';
-import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-import { ServicesController } from './services.controller';
-import { ServicesService } from './services.service';
-import { ServiceEntity } from './service.entity';
-import { ServicePeriodsEntity } from './service-periods.entity';
 import { CompanyEntity } from '../companies/company.entity';
-
-import { ServiceDTO } from './dtos/service.dto';
-import { UpdateServiceDTO } from './dtos/update-service.dto';
+import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
 import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
 import { ServicePeriodDTO } from './dtos/service-period.dto';
-
-import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
+import { ServiceDTO } from './dtos/service.dto';
+import { UpdateServiceDTO } from './dtos/update-service.dto';
+import { ServicePeriodsEntity } from './service-periods.entity';
+import { ServiceEntity } from './service.entity';
+import { ServicesController } from './services.controller';
+import { ServicesService } from './services.service';
 
 describe('ServicesController', () => {
   let serviceEntity: ServiceEntity;

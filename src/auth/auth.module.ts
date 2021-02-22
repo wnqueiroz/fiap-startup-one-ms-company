@@ -1,11 +1,10 @@
 import { Global, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigService } from '@nestjs/config';
-
-import { JwtStrategy } from './jwt.strategy';
 
 import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
 
 const modules = [
   PassportModule,

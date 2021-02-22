@@ -6,13 +6,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CreateServiceDTO } from './dtos/create-service.dto';
-import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
-
-import { ServiceEntity } from './service.entity';
 import { CompanyEntity } from '../companies/company.entity';
-import { ServicePeriodsEntity } from './service-periods.entity';
+import { CreateServicePeriodDTO } from './dtos/create-service-period.dto';
+import { CreateServiceDTO } from './dtos/create-service.dto';
 import { UpdateServiceDTO } from './dtos/update-service.dto';
+import { ServicePeriodsEntity } from './service-periods.entity';
+import { ServiceEntity } from './service.entity';
 
 @Injectable()
 export class ServicesService {

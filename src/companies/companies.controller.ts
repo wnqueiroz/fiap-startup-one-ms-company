@@ -20,17 +20,14 @@ import {
 } from '@nestjs/swagger';
 import { IsUUID } from 'class-validator';
 
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
+import { CreateServiceDTO } from '../services/dtos/create-service.dto';
 import { ServiceDTO } from '../services/dtos/service.dto';
 import { ServicesService } from '../services/services.service';
-import { CreateServiceDTO } from '../services/dtos/create-service.dto';
-
-import { CompanyDTO } from './dtos/company.dto';
 import { CompaniesService } from './companies.service';
+import { CompanyDTO } from './dtos/company.dto';
 import { CreateCompanyDTO } from './dtos/create-company.dto';
-
-import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../contants';
-
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 export class RefOneParams {
   @IsUUID('all', {

@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { ClientOptions, ClientsModule, Transport } from '@nestjs/microservices';
-
-import { ServiceEntity } from './service.entity';
-import { ServicesService } from './services.service';
-import { ServicesController } from './services.controller';
-import { ServicePeriodsEntity } from './service-periods.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CompanyEntity } from '../companies/company.entity';
-
 import { KAFKA_CLIENTS } from '../contants';
+import { ServicePeriodsEntity } from './service-periods.entity';
+import { ServiceEntity } from './service.entity';
+import { ServicesController } from './services.controller';
+import { ServicesService } from './services.service';
 
 const ServicesKafkaClient = ClientsModule.registerAsync([
   {
