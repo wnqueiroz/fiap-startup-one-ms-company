@@ -1,25 +1,32 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { CurrentUserDTO } from 'src/auth/dto/current-user.dto';
+import { Repository } from 'typeorm';
+
+import { CompaniesController } from '../../src/companies/companies.controller';
 import { CompaniesService } from '../../src/companies/companies.service';
 import { CompanyEntity } from '../../src/companies/company.entity';
-import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../../src/contants';
-import { ServiceEntity } from '../../src/services/service.entity';
-import { Repository } from 'typeorm';
-import { CompaniesController } from '../../src/companies/companies.controller';
 import { CompanyDTO } from '../../src/companies/dtos/company.dto';
-import { ServicesService } from '../../src/services/services.service';
-import { ServicePeriodsEntity } from '../../src/services/service-periods.entity';
+import { CreateCompanyDTO } from '../../src/companies/dtos/create-company.dto';
+import { KAFKA_CLIENTS, KAFKA_TOPICS } from '../../src/contants';
 import { ServiceDTO } from '../../src/services/dtos/service.dto';
-import { CreateCompanyDTO } from 'src/companies/dtos/create-company.dto';
+import { ServicePeriodsEntity } from '../../src/services/service-periods.entity';
+import { ServiceEntity } from '../../src/services/service.entity';
+import { ServicesService } from '../../src/services/services.service';
 
 describe('CompaniesController', () => {
   let companiesController: CompaniesController;
   let companiesService: CompaniesService;
   let servicesService: ServicesService;
 
+  const currentUser: CurrentUserDTO = {
+    id: 'idUser',
+    name: 'userName',
+    email: 'userMail',
+  };
+
   const createCompanyDTO: CreateCompanyDTO = {
     name: 'companyName',
-    idUser: 'idUser',
   };
 
   const companyEntity: CompanyEntity = {
@@ -90,7 +97,7 @@ describe('CompaniesController', () => {
         .spyOn(companiesService, 'getAll')
         .mockImplementation(async () => [result]);
 
-      expect(await companiesController.getAll()).toStrictEqual([
+      expect(await companiesController.getAll(currentUser)).toStrictEqual([
         excpectedCompanyDTO,
       ]);
     });
@@ -122,7 +129,7 @@ describe('CompaniesController', () => {
         .mockImplementation(async () => company);
 
       expect(
-        await companiesController.create(createCompanyRequest),
+        await companiesController.create(createCompanyRequest, currentUser),
       ).toStrictEqual(excpectedCompanyDTO);
     });
   });

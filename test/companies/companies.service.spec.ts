@@ -1,10 +1,11 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CompanyEntity } from '../../src/companies/company.entity';
-import { ServiceEntity } from '../../src/services/service.entity';
 import { Repository } from 'typeorm';
+
 import { CompaniesService } from '../../src/companies/companies.service';
+import { CompanyEntity } from '../../src/companies/company.entity';
 import { CreateCompanyDTO } from '../../src/companies/dtos/create-company.dto';
+import { ServiceEntity } from '../../src/services/service.entity';
 
 describe('CompaniesService', () => {
   let companiesService: CompaniesService;
@@ -13,7 +14,6 @@ describe('CompaniesService', () => {
 
   const createCompanyDTO: CreateCompanyDTO = {
     name: 'companyName',
-    idUser: 'idUser',
   };
 
   const createCompany: CompanyEntity = {
@@ -64,7 +64,7 @@ describe('CompaniesService', () => {
 
       jest.spyOn(companiesRepository, 'find').mockResolvedValueOnce(result);
 
-      expect(await companiesService.getAll()).toBe(result);
+      expect(await companiesService.getAll('idCompany')).toBe(result);
     });
   });
 
@@ -93,12 +93,13 @@ describe('CompaniesService', () => {
   describe('create', () => {
     it('should create a company given a companyDTO', async () => {
       const company: CompanyEntity = createCompany;
-      const createCompanyRequest = createCompanyDTO;
 
       jest.spyOn(companiesRepository, 'create').mockReturnValueOnce(company);
       jest.spyOn(companiesRepository, 'save').mockResolvedValueOnce(company);
 
-      expect(await companiesService.create(createCompanyRequest)).toBe(company);
+      expect(await companiesService.create('idUser', createCompanyDTO)).toBe(
+        company,
+      );
     });
   });
 });
