@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.1.1...1.1.2) (2021-02-24)
+
+
+### Correções de erros
+
+* fixing failing tests ([c22276c](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/c22276c7e5d160a246ef8de309401d8d6b9e4393))
+
 ### [1.1.1](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.1.0...1.1.1) (2021-02-24)
 
 ## [1.1.0](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.0.7...1.1.0) (2021-02-22)
