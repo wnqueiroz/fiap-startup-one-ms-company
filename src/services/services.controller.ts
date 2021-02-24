@@ -53,7 +53,7 @@ export class ServicesController {
   @ApiParam({
     name: 'id',
     type: 'string',
-    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+    example: '00000000-0000-0000-0000-000000000000',
   })
   @ApiOkResponse({
     description: 'The record has been successfully returned.',
@@ -73,7 +73,7 @@ export class ServicesController {
   @ApiParam({
     name: 'id',
     type: 'string',
-    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+    example: '00000000-0000-0000-0000-000000000000',
   })
   @ApiOkResponse({
     description: 'The record has been successfully updated.',
@@ -103,7 +103,7 @@ export class ServicesController {
   @ApiParam({
     name: 'id',
     type: 'string',
-    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+    example: '00000000-0000-0000-0000-000000000000',
   })
   @ApiOkResponse({
     description: 'The record has been successfully deleted.',
@@ -127,7 +127,7 @@ export class ServicesController {
   @ApiParam({
     name: 'id',
     type: 'string',
-    example: '3f0a66e5-3886-4f22-9cb1-41c921e62e20',
+    example: '00000000-0000-0000-0000-000000000000',
   })
   @ApiCreatedResponse({
     description: 'The record has been successfully created.',
