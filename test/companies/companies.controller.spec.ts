@@ -91,14 +91,14 @@ describe('CompaniesController', () => {
   describe('getAll', () => {
     it('should return a list of companyDTOs', async () => {
       const result = companyEntity;
-      const excpectedCompanyDTO = new CompanyDTO(result);
+      const expectedCompanyDTO = new CompanyDTO(result);
 
       jest
         .spyOn(companiesService, 'getAll')
         .mockImplementation(async () => [result]);
 
       expect(await companiesController.getAll(currentUser)).toStrictEqual([
-        excpectedCompanyDTO,
+        expectedCompanyDTO,
       ]);
     });
   });
@@ -106,7 +106,7 @@ describe('CompaniesController', () => {
   describe('getAllServices', () => {
     it('should return all services by a company id', async () => {
       const services = serviceEntity;
-      const excpectedSerivesDTO = new ServiceDTO(services);
+      const expectedServicesDTO = new ServiceDTO(services);
 
       jest
         .spyOn(companiesService, 'getAllServices')
@@ -114,7 +114,7 @@ describe('CompaniesController', () => {
 
       expect(
         await companiesController.getAllServices({ id: 'idCompany' }),
-      ).toStrictEqual([excpectedSerivesDTO]);
+      ).toStrictEqual([expectedServicesDTO]);
     });
   });
 
@@ -122,7 +122,7 @@ describe('CompaniesController', () => {
     it('should return a created company', async () => {
       const company: CompanyEntity = companyEntity;
       const createCompanyRequest = createCompanyDTO;
-      const excpectedCompanyDTO = new CompanyDTO(company);
+      const expectedCompanyDTO = new CompanyDTO(company);
 
       jest
         .spyOn(companiesService, 'create')
@@ -130,7 +130,7 @@ describe('CompaniesController', () => {
 
       expect(
         await companiesController.create(createCompanyRequest, currentUser),
-      ).toStrictEqual(excpectedCompanyDTO);
+      ).toStrictEqual(expectedCompanyDTO);
     });
   });
 
