@@ -14,11 +14,13 @@ describe('CompaniesService', () => {
 
   const createCompanyDTO: CreateCompanyDTO = {
     name: 'companyName',
+    address: 'address',
   };
 
   const createCompany: CompanyEntity = {
     id: 'uuidCompany',
     name: 'Company Name',
+    address: 'Address',
     idUser: 'idUser',
     createdAt: new Date(),
     updatedAt: new Date(),

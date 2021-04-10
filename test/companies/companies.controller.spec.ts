@@ -27,11 +27,13 @@ describe('CompaniesController', () => {
 
   const createCompanyDTO: CreateCompanyDTO = {
     name: 'companyName',
+    address: 'address',
   };
 
   const companyEntity: CompanyEntity = {
     id: 'uuidCompany',
     name: 'Company Name',
+    address: 'Address',
     idUser: 'idUser',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -136,12 +138,17 @@ describe('CompaniesController', () => {
 
   describe('createService', () => {
     it('should return a created service', async () => {
+      const company: CompanyEntity = companyEntity;
       const service = serviceEntity;
       const expectedServiceDTO = new ServiceDTO(service);
 
       jest
         .spyOn(servicesService, 'create')
         .mockImplementation(async () => service);
+
+      jest
+        .spyOn(servicesService, 'getCompany')
+        .mockImplementation(async () => company);
 
       expect(
         await companiesController.createService(
@@ -152,11 +159,16 @@ describe('CompaniesController', () => {
     });
 
     it('should emit a service created message to the kafka topic', async () => {
+      const company: CompanyEntity = companyEntity;
       const service = serviceEntity;
 
       jest
         .spyOn(servicesService, 'create')
         .mockImplementation(async () => service);
+
+      jest
+        .spyOn(servicesService, 'getCompany')
+        .mockImplementation(async () => company);
 
       expect(
         await companiesController.createService(
@@ -165,9 +177,16 @@ describe('CompaniesController', () => {
         ),
       ).toBeCalled;
 
-      expect(
-        mockToEmitClientKafka,
-      ).toBeCalledWith(KAFKA_TOPICS.SERVICES_CREATED, { ...service });
+      expect(mockToEmitClientKafka).toBeCalledWith(
+        KAFKA_TOPICS.SERVICES_CREATED,
+        {
+          ...service,
+          ...{
+            companyName: company.name,
+            companyAddress: company.address,
+          },
+        },
+      );
       expect(mockToPromiseClientKafka).toBeCalled();
     });
   });

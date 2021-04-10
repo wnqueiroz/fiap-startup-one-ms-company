@@ -17,6 +17,7 @@ describe('ServicesService', () => {
     id: 'uuidCompany',
     name: 'Company Name',
     idUser: 'idUser',
+    address: 'Address',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
