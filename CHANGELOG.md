@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.1.2...1.2.0) (2021-04-10)
+
+
+### Funcionalidades
+
+* added new address field to company ([dca2512](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/dca2512338f9d7e58615502ae19c853b8f94367b))
+
+
+### Correções de erros
+
+* adjusted test file ([66d6bcf](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/66d6bcf6e576485eb49f9ef66ecdbcbb28759644))
+
 ### [1.1.2](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.1.1...1.1.2) (2021-02-24)
 
 
