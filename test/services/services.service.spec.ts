@@ -25,6 +25,7 @@ describe('ServicesService', () => {
   const serviceEntity: ServiceEntity = {
     id: 'uuidService',
     name: 'Service Name',
+    price: 60,
     idCompany: 'idCompany',
     company: companyEntity,
     servicePeriods: [],

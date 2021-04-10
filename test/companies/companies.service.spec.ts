@@ -29,6 +29,7 @@ describe('CompaniesService', () => {
   const createService: ServiceEntity = {
     id: 'uuidService',
     name: 'Service Name',
+    price: 60,
     idCompany: 'idCompany',
     company: createCompany,
     servicePeriods: null,
