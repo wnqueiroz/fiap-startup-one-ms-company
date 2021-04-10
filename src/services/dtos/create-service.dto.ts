@@ -9,4 +9,12 @@ export class CreateServiceDTO {
     message: 'Informe o nome do serviço',
   })
   name: string;
+
+  @ApiProperty({
+    example: '60',
+  })
+  @IsNotEmpty({
+    message: 'Informe o preço do serviço',
+  })
+  price: number;
 }
