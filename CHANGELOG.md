@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.2.0...1.3.0) (2021-04-10)
+
+
+### Funcionalidades
+
+* added price field ([3649d50](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/3649d50a4eae184450110d1edcee35fea3439c14))
+
+
+### Correções de erros
+
+* fixed tests ([1b58e27](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/1b58e271677c1bde45af96eb205c8cb1e92dc8ef))
+* fixed the request body on swagger ([0ca1771](https://github.com/wnqueiroz/fiap-startup-one-ms-company/commit/0ca17711774f93ceb46568a86705e02e8fe7a17d))
+
 ## [1.2.0](https://github.com/wnqueiroz/fiap-startup-one-ms-company/compare/1.1.2...1.2.0) (2021-04-10)
 
 
