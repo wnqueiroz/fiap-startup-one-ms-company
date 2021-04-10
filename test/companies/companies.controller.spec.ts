@@ -154,7 +154,7 @@ describe('CompaniesController', () => {
       expect(
         await companiesController.createService(
           { id: 'uuidCompany' },
-          { name: 'serviceName' },
+          { name: 'serviceName', price: 60 },
         ),
       ).toEqual(expectedServiceDTO);
     });
@@ -174,7 +174,7 @@ describe('CompaniesController', () => {
       expect(
         await companiesController.createService(
           { id: 'uuidCompany' },
-          { name: 'serviceName' },
+          { name: 'serviceName', price: 60 },
         ),
       ).toBeCalled;
 
