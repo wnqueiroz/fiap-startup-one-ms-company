@@ -25,6 +25,7 @@ describe('ServicesService', () => {
   const serviceEntity: ServiceEntity = {
     id: 'uuidService',
     name: 'Service Name',
+    price: 60,
     idCompany: 'idCompany',
     company: companyEntity,
     servicePeriods: [],
@@ -145,7 +146,10 @@ describe('ServicesService', () => {
       jest.spyOn(servicesRepository, 'save').mockResolvedValueOnce(service);
 
       expect(
-        await servicesService.create('uuidCompany', { name: 'serviceName' }),
+        await servicesService.create('uuidCompany', {
+          name: 'serviceName',
+          price: 60,
+        }),
       ).toStrictEqual(service);
     });
 
@@ -153,7 +157,10 @@ describe('ServicesService', () => {
       jest.spyOn(companiesRepository, 'findOne').mockResolvedValueOnce(null);
 
       await expect(
-        servicesService.create('uuidCompany', { name: 'serviceName' }),
+        servicesService.create('uuidCompany', {
+          name: 'serviceName',
+          price: 60,
+        }),
       ).rejects.toThrow('Company not found');
     });
   });
