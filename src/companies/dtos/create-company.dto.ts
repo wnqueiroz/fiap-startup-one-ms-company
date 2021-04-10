@@ -9,4 +9,12 @@ export class CreateCompanyDTO {
     example: 'Barber Shop S/A',
   })
   name: string;
+
+  @IsNotEmpty({
+    message: 'Informe o endereço',
+  })
+  @ApiProperty({
+    example: 'Av. Paulista, 100 - São Paulo/SP',
+  })
+  address: string;
 }
