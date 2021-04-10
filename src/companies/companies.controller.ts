@@ -129,8 +129,18 @@ export class CompaniesController {
       createServiceDTO,
     );
 
+    const companyEntity = await this.servicesService.getCompany(
+      serviceEntity.id,
+    );
+
     await this.client
-      .emit(KAFKA_TOPICS.SERVICES_CREATED, { ...serviceEntity })
+      .emit(KAFKA_TOPICS.SERVICES_CREATED, {
+        ...serviceEntity,
+        ...{
+          companyName: companyEntity.name,
+          companyAddress: companyEntity.address,
+        },
+      })
       .toPromise();
 
     return new ServiceDTO(serviceEntity);

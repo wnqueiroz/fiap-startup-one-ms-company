@@ -104,4 +104,18 @@ export class ServicesService {
 
     return this.servicePeriodsRepository.save(servicePeriodEntity);
   }
+
+  async getCompany(idService: string): Promise<CompanyEntity> {
+    const serviceExists = await this.servicesRepository.findOne(idService);
+
+    if (!serviceExists) throw new NotFoundException('Service not found');
+
+    const companyExists = await this.companiesRepository.findOne(
+      serviceExists.idCompany,
+    );
+
+    if (!companyExists) throw new NotFoundException('Company not found');
+
+    return companyExists;
+  }
 }

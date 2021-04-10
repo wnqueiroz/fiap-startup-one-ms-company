@@ -16,6 +16,9 @@ export class CompanyEntity {
   @Column({ nullable: false })
   name: string;
 
+  @Column({ nullable: false })
+  address: string;
+
   @Column('uuid', {
     nullable: false,
   })
